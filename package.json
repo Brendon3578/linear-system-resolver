@@ -1,0 +1,16 @@
+{
+  "name": "matriz-calculator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tailwind": "npx tailwindcss -i ./src/styles/input.css -o ./src/styles/output.css --watch"
+  },
+  "keywords": [],
+  "author": "Brendon Gomes",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.3"
+  }
+}
