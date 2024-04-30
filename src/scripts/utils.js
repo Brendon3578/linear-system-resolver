@@ -73,10 +73,26 @@ function isNumber(value) {
 }
 
 /**
+ * Arredonda um número de ponto flutuante para três casas decimais.
+ * @param {number} numero - O número a ser arredondado.
+ * @returns {number} Um número com apenas três casas decimais.
+ */
+function roundToThreeDecimalPlaces(number) {
+  return Math.round(number * 1000) / 1000;
+}
+
+/**
  * Verifica se um elemento existe, ou seja, se não é nulo ou indefinido.
  * @param {HTMLElement | null} el - O elemento a ser verificado.
  * @returns {boolean} Retorna true se o elemento existir (não for nulo ou indefinido), caso contrário, retorna false.
  */
 const elementExists = (el) => el != null;
 
-export { isMatrixNxN, isNumber, log, writeMatrix, elementExists };
+export {
+  isMatrixNxN,
+  isNumber,
+  log,
+  writeMatrix,
+  elementExists,
+  roundToThreeDecimalPlaces,
+};

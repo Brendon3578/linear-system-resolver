@@ -8,11 +8,11 @@
   </head>
   <body class="min-h-screen min-w-full flex justify-center mt-10">
     <div
-      class="max-w-xl p-5 border border-gray-400 rounded shadow-lg flex flex-col gap-3 w-full h-min"
+      class="max-w-2xl p-5 border border-gray-400 rounded shadow-lg flex flex-col gap-3 w-full h-min"
     >
       <h1 class="text-center text-lg font-bold">Calcular Sistemas Lineares</h1>
-      <div class="flex gap-2 justify-between">
-        <section class="flex flex-col gap-2">
+      <div class="flex gap-4 flex-col sm:flex-row">
+        <section class="flex flex-col gap-2 w-full">
           <h3>Digite os sistemas lineares</h3>
           <div class="flex flex-col gap-0.5">
             <span class="text-sm text-gray-700"
@@ -64,17 +64,17 @@
             />
           </label>
         </section>
-        <section class="flex flex-col gap-2">
+        <section class="flex flex-col gap-2 w-full">
           <div>
             <h3>Sistema linear</h3>
-            <div id="linear-system-illustration" class="py-1"></div>
+            <div id="linear-system-illustration" class="p-1"></div>
           </div>
           <div>
             <h3>
               Equações na
               <span class="text-blue-600"> representação matricial</span>
             </h3>
-            <div id="matrix-illustration" class="py-1"></div>
+            <div id="matrix-illustration" class="p-1"></div>
           </div>
         </section>
       </div>
@@ -85,10 +85,39 @@
       >
         Resolver
       </button>
-      <div>
-        <span>Mensagem: <span id="status-message"> </span></span>
+
+      <div class="flex flex-col gap-1 items-center w-full">
+        <h2 class="text-gray-900 font-bold text-lg">Solução do sistema</h2>
+        <div class="w-full flex gap-0.5 flex-col border-b border-gray-400 p-1">
+          <div class="mb-2">Mensagem: <span id="status-message"> </span></div>
+          <div class="text-sm">
+            Classificação do sistema linear:
+            <span id="system-classification">
+              SPD Sistema possível determinado
+            </span>
+          </div>
+        </div>
+        <div class="flex flex-col sm:flex-row justify-between w-full p-1 gap-2">
+          <div class="basis-1/4">
+            <h4>Resultado:</h4>
+            <ul id="result-list" class="list-disc pl-6">
+              <li>X = <b class="font-bold">?</b></li>
+              <li>Y = <b class="font-bold">?</b></li>
+            </ul>
+          </div>
+          <div class="basis-3/4">
+            <h4>Resultado das Determinantes:</h4>
+
+            <ul id="determinant-list" class="flex flex-col md:flex-row gap-4">
+              <!-- <li class="flex flex-col gap-2 items-center">
+                <span>Determinante de X: 4</span>
+                <div>\( \begin{bmatrix} a & b\\ c & d\ \end{bmatrix} \)</div>
+              </li> -->
+            </ul>
+          </div>
+        </div>
+        <div class="mt-3 p-2 rounded" id="result"></div>
       </div>
-      <div class="mt-3 p-2 rounded" id="result"></div>
     </div>
 
     <script>

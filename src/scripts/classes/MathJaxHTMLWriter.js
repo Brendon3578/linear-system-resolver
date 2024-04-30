@@ -30,31 +30,8 @@ class MathJaxHTMLWriter {
     this.drawn2x2LinearSystem(initialCoefficientMatrix, initialConstantMatrix);
   }
 
-  async #updateMathJax() {
+  async updateMathJax() {
     await MathJax.typesetPromise();
-  }
-
-  drawn2x2MatrixRepresentation(coefficientMatrix, constantMatrix) {
-    const [a, b] = coefficientMatrix[0];
-    const [c, d] = coefficientMatrix[1];
-    const [x, y] = constantMatrix;
-    this.#matrixIllustrationEl.innerHTML = `
-    \\( \\begin{bmatrix} ${a} & ${b}\\\\ ${c} & ${d}\
-      \\end{bmatrix}\\times\\begin{bmatrix} x\\\\ y
-      \\end{bmatrix}=\\begin{bmatrix} ${x}\\\\${y} \\end{bmatrix} \\)
-    `;
-  }
-
-  drawn3x3MatrixRepresentation(coefficientMatrix, constantMatrix) {
-    const [a, b, c] = coefficientMatrix[0];
-    const [d, e, f] = coefficientMatrix[1];
-    const [g, h, i] = coefficientMatrix[2];
-    const [x, y, z] = constantMatrix;
-    this.#matrixIllustrationEl.innerHTML = `
-    \\( \\begin{bmatrix} ${a} & ${b} & ${c}\\\\ ${d} & ${e} & ${f}\\\\ ${g} & ${h} & ${i}\
-      \\end{bmatrix}\\times\\begin{bmatrix} x\\\\ y\\\\ z
-      \\end{bmatrix}=\\begin{bmatrix} ${x}\\\\${y}\\\\${z} \\end{bmatrix} \\)
-    `;
   }
 
   /**
@@ -66,10 +43,21 @@ class MathJaxHTMLWriter {
     const modifiedMatrix = matrix.map((array, rowIndex) => {
       return array.map((value, columnIndex) => {
         // Se for o primeiro elemento da linha, converte para string e retorna
-        if (columnIndex === 0) return `${value}`;
+        if (columnIndex === 0) {
+          // não mostrar 1x, mas sim apenas a incógnita x
+          console.log(value);
+          if (value == -1 || value == 1) {
+            if (value.toString() == "1") return " ";
+            if (value.toString() == "-1") return "-";
+          }
+          return `${value}`;
+        }
 
         // Verifica se o valor do elemento em questão da matrix é um número
         if (isNumber(value)) {
+          // não mostrar 1x, mas sim apenas a incógnita x
+          if (value == 1) return "+ ";
+          if (value == -1) return "-";
           // Se for um número, verifica se é menor que 0, se for retorna o valor em string,
           // caso contrário retorna o valor em string junto com o símbolo de '+' pré-fixado
           return value < 0 ? `${value}` : `+ ${value}`;
@@ -84,26 +72,47 @@ class MathJaxHTMLWriter {
     return modifiedMatrix;
   }
 
+  drawn2x2MatrixRepresentation(coefficientMatrix, constantMatrix) {
+    const [a, b] = coefficientMatrix[0];
+    const [c, d] = coefficientMatrix[1];
+    const [x, y] = constantMatrix;
+    this.#matrixIllustrationEl.innerHTML = `
+    \\( \\begin{bmatrix} ${a} & ${b}\\\\ ${c} & ${d}\
+      \\end{bmatrix}\\times\\begin{bmatrix} x\\\\ y
+      \\end{bmatrix}=\\begin{bmatrix} ${x}\\\\${y} \\end{bmatrix} \\)
+    `;
+  }
+
+  write2x2Matrix(matrix) {
+    const [a, b] = matrix[0];
+    const [c, d] = matrix[1];
+    return `
+    \\( \\begin{bmatrix} ${a} & ${b}\\\\ ${c} & ${d}\
+      \\end{bmatrix} \\)`;
+  }
+  write3x3Matrix(matrix) {
+    const [a, b, c] = matrix[0];
+    const [d, e, f] = matrix[1];
+    const [g, h, i] = matrix[2];
+    return `
+    \\( \\begin{bmatrix} ${a} & ${b} & ${c}\\\\ ${d} & ${e} & ${f}\\\\ ${g} & ${h} & ${i}\
+      \\end{bmatrix} \\)`;
+  }
+
+  drawn3x3MatrixRepresentation(coefficientMatrix, constantMatrix) {
+    const [a, b, c] = coefficientMatrix[0];
+    const [d, e, f] = coefficientMatrix[1];
+    const [g, h, i] = coefficientMatrix[2];
+    const [x, y, z] = constantMatrix;
+    this.#matrixIllustrationEl.innerHTML = `
+    \\( \\begin{bmatrix} ${a} & ${b} & ${c}\\\\ ${d} & ${e} & ${f}\\\\ ${g} & ${h} & ${i}\
+      \\end{bmatrix}\\times\\begin{bmatrix} x\\\\ y\\\\ z
+      \\end{bmatrix}=\\begin{bmatrix} ${x}\\\\${y}\\\\${z} \\end{bmatrix} \\)
+    `;
+  }
+
   drawn2x2LinearSystem(coefficientMatrix, constantMatrix) {
     const matrix = this.#stringifyMatrixElements(coefficientMatrix.slice());
-
-    // matrix.forEach((array, rowIndex) => {
-    //   array.forEach((value, columnIndex) => {
-    //     if (columnIndex == 0) {
-    //       matrix[rowIndex][columnIndex] = `${value}`
-    //       return;
-    //     };
-
-    //     if (typeof value != "string") {
-    //       if (value < 0) matrix[rowIndex][columnIndex] = `${value}`;
-    //       else matrix[rowIndex][columnIndex] = `+ ${value}`;
-    //       console.log(value);
-    //     } else {
-    //       console.log(matrix[rowIndex][columnIndex]);
-    //       matrix[rowIndex][columnIndex] = `+ ${value}`;
-    //     }
-    //   });
-    // });
 
     let [a, b] = matrix[0];
     let [c, d] = matrix[1];
@@ -113,23 +122,23 @@ class MathJaxHTMLWriter {
     \\( \\left\\{\\begin{matrix} ${a}x ${b}y & = ${x} \\\\ ${c}x ${d}y & = ${y}
       \\end{matrix}\\right. \\)
     `;
-    this.#updateMathJax();
+    this.updateMathJax();
   }
 
   drawn3x3LinearSystem(coefficientMatrix, constantMatrix) {
-    const [a, b, c] = coefficientMatrix[0];
-    const [d, e, f] = coefficientMatrix[1];
-    const [g, h, i] = coefficientMatrix[2];
+    const matrix = this.#stringifyMatrixElements(coefficientMatrix.slice());
+
+    const [a, b, c] = matrix[0];
+    const [d, e, f] = matrix[1];
+    const [g, h, i] = matrix[2];
     const [x, y, z] = constantMatrix;
 
-    const bOperator = b < 0 ? "" : "+"; //evitar casos de 2x + - 3y = 6
-    const dOperator = d < 0 ? "" : "+"; //evitar casos de 2x + - 3y = 6
     this.#linearSystemIllustrationEl.innerHTML = `
-    \\( \\left\\{\\begin{matrix} ${a}x ${bOperator} ${b}y & = ${x} \\\\ ${c}x ${dOperator} ${d}y & = ${y}
+    \\( \\left\\{\\begin{matrix} ${a}x ${b}y ${c}z & = ${x} \\\\ ${d}x ${e}y ${f}z & = ${y} \\\\ ${g}x ${h}y ${i}z & = ${z}
       \\end{matrix}\\right. \\)
     `;
 
-    this.#updateMathJax();
+    this.updateMathJax();
   }
 }
 
