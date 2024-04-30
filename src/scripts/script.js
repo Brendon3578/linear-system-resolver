@@ -92,6 +92,8 @@ function solveSystem() {
   try {
     resultListEl.innerHTML = "";
     determinantListEl.innerHTML = "";
+    systemsClassificationTextEl.innerHTML = "";
+
     let eq1 = firstEquationEl.value;
     let eq2 = secondEquationEl.value;
 
