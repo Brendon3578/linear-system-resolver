@@ -2,7 +2,9 @@
 
 Este é um simples programa em JavaScript para resolver sistemas lineares usando o método de Cramer.
 
-## Como Usar
+Para acessar esse projeto basta [acessar clicando aqui](https://brendon3578.github.io/linear-system-resolver/src/index.html)
+
+## Como usar localmente
 
 1. **Clonar o Repositório:**
 
