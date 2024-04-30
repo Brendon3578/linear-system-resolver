@@ -88,6 +88,40 @@ function roundToThreeDecimalPlaces(number) {
  */
 const elementExists = (el) => el != null;
 
+/**
+ * Verifica se um determinante dado é igual a zero.
+ * @param {number} det O valor do determinante a ser verificado.
+ * @returns {boolean} Retorna true se o determinante for zero, false caso contrário.
+ */
+const isDeterminantEqualsZero = (det) => det === 0;
+
+/**
+ * Verifica se todos os determinantes em um array são iguais a zero.
+ * @param {number[]} determinants Um array contendo os determinantes a serem verificados.
+ * @returns {boolean} Retorna true se todos os determinantes forem zero, false caso contrário.
+ */
+function areAllDeterminantsZero(determinants) {
+  // Verifica se todos os elementos do array são iguais a zero
+  return determinants.every((det) => isDeterminantEqualsZero(det));
+}
+
+/**
+ * Verifica se há determinantes dentro de um array que não são iguais a zero.
+ * @param {number[]} determinants Um array contendo os determinantes a serem verificados.
+ * @returns {boolean} Retorna true se algum determinante não for zero, false caso contrário.
+ */
+function hasDeterminantsNotEqualsZero(determinants) {
+  // Verifica se algum elemento do array não é igual a zero
+  return determinants.some((det) => det !== 0);
+}
+
+/**
+ * Verifica se um determinante dado não é igual a zero.
+ * @param {number} det O valor do determinante a ser verificado.
+ * @returns {boolean} Retorna true se o determinante não for zero, false caso contrário.
+ */
+const isDeterminantNotEqualsZero = (det) => det !== 0;
+
 export {
   isMatrixNxN,
   isNumber,
@@ -95,4 +129,8 @@ export {
   writeMatrix,
   elementExists,
   roundToThreeDecimalPlaces,
+  isDeterminantEqualsZero,
+  isDeterminantNotEqualsZero,
+  areAllDeterminantsZero,
+  hasDeterminantsNotEqualsZero,
 };
