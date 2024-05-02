@@ -163,18 +163,18 @@ function generateRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-export {
-  isMatrixNxN,
-  isNumber,
-  log,
-  writeMatrix,
-  elementExists,
-  roundToThreeDecimalPlaces,
-  isDeterminantEqualsZero,
-  isDeterminantNotEqualsZero,
-  areAllDeterminantsZero,
-  hasDeterminantsNotEqualsZero,
-  isInfinity,
-  isEquationValid,
-  generateRandomNumber,
-};
+// export {
+//   isMatrixNxN,
+//   isNumber,
+//   log,
+//   writeMatrix,
+//   elementExists,
+//   roundToThreeDecimalPlaces,
+//   isDeterminantEqualsZero,
+//   isDeterminantNotEqualsZero,
+//   areAllDeterminantsZero,
+//   hasDeterminantsNotEqualsZero,
+//   isInfinity,
+//   isEquationValid,
+//   generateRandomNumber,
+// };

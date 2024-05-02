@@ -1,16 +1,16 @@
-import { MathJaxHTMLWriter } from "./classes/MathJaxHTMLWriter.js";
-import {
-  areAllDeterminantsZero,
-  generateRandomNumber,
-  hasDeterminantsNotEqualsZero,
-  isDeterminantEqualsZero,
-  isEquationValid,
-  isInfinity,
-  isNumber,
-  log,
-  roundToThreeDecimalPlaces,
-  writeMatrix,
-} from "./utils.js";
+// import { MathJaxHTMLWriter } from "./classes/MathJaxHTMLWriter.js";
+// import {
+//   areAllDeterminantsZero,
+//   generateRandomNumber,
+//   hasDeterminantsNotEqualsZero,
+//   isDeterminantEqualsZero,
+//   isEquationValid,
+//   isInfinity,
+//   isNumber,
+//   log,
+//   roundToThreeDecimalPlaces,
+//   writeMatrix,
+// } from "./utils.js";
 
 /**
  * @type { HTMLInputElement }
@@ -35,13 +35,12 @@ const mathJaxHTMLWriter = new MathJaxHTMLWriter(
 
 function showStatusMessage(status, message) {
   statusMessageEl.classList.value = "";
+  statusMessageEl.innerText = message;
   switch (status) {
     case "success":
-      statusMessageEl.innerText = message;
       statusMessageEl.classList.value = "text-green-700 font-bold";
       break;
     case "error":
-      statusMessageEl.innerText = message;
       statusMessageEl.classList.value = "text-red-600 font-bold";
       break;
   }
@@ -410,8 +409,11 @@ function solve3x3System(coeffs_eq1, coeffs_eq2, coeffs_eq3) {
 }
 
 /**
- * @param {string} eq
- * @returns
+ * Extrai os coeficientes de uma equação linear.
+ * @param {string} eq - A equação linear a ser analisada.
+ * @param {HTMLElement} [elementToFocusIfError] - O elemento HTML para focar se houver um erro, no qual será focado.
+ * @returns {Array<number>} Um array contendo os coeficientes da equação.
+ * @throws {Error} Se houver um erro durante a extração dos coeficientes ou se a equação não estiver formatada corretamente.
  */
 function extractCoefficients(eq, elementToFocusIfError) {
   let unknowns = ["x", "y"];

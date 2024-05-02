@@ -1,9 +1,18 @@
-import { elementExists, isNumber } from "../utils.js";
+// import { elementExists, isNumber } from "../utils.js";
 
+/**
+ * Classe para escrever representações HTML de sistemas lineares usando MathJax.
+ */
 class MathJaxHTMLWriter {
   #matrixIllustrationEl;
   #linearSystemIllustrationEl;
 
+  /**
+   * Cria uma instância de MathJaxHTMLWriter.
+   * @param {HTMLElement} matrixIllustrationEl - O elemento HTML onde a representação da matriz será desenhada.
+   * @param {HTMLElement} linearSystemIllustrationEl - O elemento HTML onde a representação do sistema linear será desenhada.
+   * @throws {Error} Se os elementos fornecidos não existirem.
+   */
   constructor(matrixIllustrationEl, linearSystemIllustrationEl) {
     if (
       (elementExists(matrixIllustrationEl) &&
@@ -19,10 +28,17 @@ class MathJaxHTMLWriter {
     this.drawInitial2x2MatrixRepresentationAndLinearSystem();
   }
 
+  /**
+   * Atualiza o display engine MathJax no HTML.
+   * @returns {Promise<void>} Uma promessa que é resolvida quando a renderização é concluída.
+   */
   async updateMathJax() {
     await MathJax.typesetPromise();
   }
 
+  /**
+   * Desenha a representação inicial de uma matriz 2x2 e um sistema linear.
+   */
   drawInitial2x2MatrixRepresentationAndLinearSystem() {
     const initialCoefficientMatrix = [
       ["a", "b"],
@@ -38,6 +54,9 @@ class MathJaxHTMLWriter {
     this.drawn2x2LinearSystem(initialCoefficientMatrix, initialConstantMatrix);
   }
 
+  /**
+   * Desenha a representação inicial de uma matriz 3x3 e um sistema linear.
+   */
   drawInitial3x3MatrixRepresentationAndLinearSystem() {
     const initialCoefficientMatrix = [
       ["a", "b", "c"],
@@ -92,6 +111,11 @@ class MathJaxHTMLWriter {
     return modifiedMatrix;
   }
 
+  /**
+   * Desenha a representação matricial de uma matriz 2x2.
+   * @param {Array<Array<number|string>>} coefficientMatrix - A matriz de coeficientes.
+   * @param {Array<string>} constantMatrix - A matriz de constantes.
+   */
   drawn2x2MatrixRepresentation(coefficientMatrix, constantMatrix) {
     const [a, b] = coefficientMatrix[0];
     const [c, d] = coefficientMatrix[1];
@@ -103,6 +127,11 @@ class MathJaxHTMLWriter {
     `;
   }
 
+  /**
+   * Escreve a representação de uma matriz 2x2.
+   * @param {Array<Array<number|string>>} matrix - A matriz a ser representada.
+   * @returns {string} A representação escrita em MathJax da matriz.
+   */
   write2x2Matrix(matrix) {
     const [a, b] = matrix[0];
     const [c, d] = matrix[1];
@@ -110,6 +139,12 @@ class MathJaxHTMLWriter {
     \\( \\begin{bmatrix} ${a} & ${b}\\\\ ${c} & ${d}\
       \\end{bmatrix} \\)`;
   }
+
+  /**
+   * Escreve a representação de uma matriz 3x3.
+   * @param {Array<Array<number|string>>} matrix - A matriz a ser representada.
+   * @returns {string} A representação escrita em MatJax da matriz.
+   */
   write3x3Matrix(matrix) {
     const [a, b, c] = matrix[0];
     const [d, e, f] = matrix[1];
@@ -119,6 +154,11 @@ class MathJaxHTMLWriter {
       \\end{bmatrix} \\)`;
   }
 
+  /**
+   * Desenha a representação de uma matriz 3x3.
+   * @param {Array<Array<number|string>>} coefficientMatrix - A matriz de coeficientes.
+   * @param {Array<string>} constantMatrix - A matriz de constantes.
+   */
   drawn3x3MatrixRepresentation(coefficientMatrix, constantMatrix) {
     const [a, b, c] = coefficientMatrix[0];
     const [d, e, f] = coefficientMatrix[1];
@@ -131,6 +171,11 @@ class MathJaxHTMLWriter {
     `;
   }
 
+  /**
+   * Desenha a representação de um sistema linear 2x2.
+   * @param {Array<Array<number|string>>} coefficientMatrix - A matriz de coeficientes.
+   * @param {Array<string>} constantMatrix - A matriz de constantes.
+   */
   drawn2x2LinearSystem(coefficientMatrix, constantMatrix) {
     const matrix = this.#stringifyMatrixElements(coefficientMatrix.slice());
 
@@ -145,6 +190,11 @@ class MathJaxHTMLWriter {
     this.updateMathJax();
   }
 
+  /**
+   * Desenha a representação de um sistema linear 3x3.
+   * @param {Array<Array<number|string>>} coefficientMatrix - A matriz de coeficientes.
+   * @param {Array<string>} constantMatrix - A matriz de constantes.
+   */
   drawn3x3LinearSystem(coefficientMatrix, constantMatrix) {
     const matrix = this.#stringifyMatrixElements(coefficientMatrix.slice());
 
@@ -162,4 +212,4 @@ class MathJaxHTMLWriter {
   }
 }
 
-export { MathJaxHTMLWriter };
+// export { MathJaxHTMLWriter };
