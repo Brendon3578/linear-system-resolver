@@ -1,10 +1,12 @@
 # Resolvedor de Sistema Linear
 
-Este é um simples programa em JavaScript para resolver sistemas lineares usando o método de Cramer.
+Este projeto é uma simples página, feita com HTML, CSS e principalmente em JavaScript para resolver os sistemas lineares usando o método de Cramer. Para acessar esse projeto basta [acessar essa página](https://brendon3578.github.io/linear-system-resolver/src/index.html)
 
-Para acessar esse projeto basta [acessar clicando aqui](https://brendon3578.github.io/linear-system-resolver/src/index.html)
+<p align="center">
+   <img alt="Imagem do programa" src="./.github/example_application.png">
+</p>
 
-## Como usar localmente
+## Como baixar e usar localmente
 
 1. **Clonar o Repositório:**
 
@@ -20,12 +22,10 @@ Para acessar esse projeto basta [acessar clicando aqui](https://brendon3578.gith
 
 3. **Interagindo com o Programa:**
 
-   A página abrirá em seu navegador, onde você poderá inserir o número de equações e incógnitas do sistema linear. Em seguida, insira os coeficientes das equações e seus respectivos resultados. O programa fornecerá a solução do sistema linear usando o método de Cramer.
+   A página abrirá em seu navegador, onde você poderá inserir as equações dos sistemas lineares, que pode ser do tipo 2x2 ou 3x3. Em seguida. O programa fornecerá a solução do sistema linear usando o método de Cramer e mostrará também a representação matricial o sistema linear, e classificará o sistema linear.
 
-## Contribuições
+---
 
-Contribuições são bem-vindas! Se você encontrar algum problema ou tiver sugestões de melhorias, sinta-se à vontade para abrir uma issue ou enviar um pull request.
-
-## Licença
-
-Este projeto está licenciado sob a licença MIT
+<h3 align="center">
+    Feito com ☕ por <a href="https://github.com/Brendon3578"> Brendon Gomes</a>
+</h3>

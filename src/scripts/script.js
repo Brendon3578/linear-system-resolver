@@ -145,7 +145,7 @@ function solveSystem() {
 
       const unknown = solution.unknown.toUpperCase();
       const determinantCalc = solution.determinantCalc;
-      resultListEl.innerHTML += `<li title="Resultado de ${unknown} é igual a ${result}">
+      resultListEl.innerHTML += `<li title="Resultado de ${unknown} é igual a ${solution.value}">
       ${unknown} = <b class="font-bold">${result}</b> (${determinantCalc})</li>`;
     });
 
@@ -155,7 +155,7 @@ function solveSystem() {
       determinantListEl.innerHTML += `
       <li
         class="flex flex-col gap-2 items-center justify-between rounded-md shadow-lg p-2 pb-4 border border-gray-400 w-full bg-gradient-to-t from-gray-200 to-white max-w-min"
-        title="Resultado da determinante de ${unknown} é igual a ${result}"
+        title="Resultado da determinante de ${unknown} é igual a ${determinant.result}"
       >
         <span class="text-sm font-semibold whitespace-nowrap">Det. de ${unknown} = ${result}</span>
         <div>${determinant.matrixHTML}</div>
@@ -524,9 +524,9 @@ const sample3x3Equations = [
     three: "3x + 4y + 5z = 16",
   },
   {
-    first: "x + 2y +z = 4",
-    second: "2x + 4y + 2z = 8",
-    three: "3x + 6y + 3z = 12",
+    first: "x + y +z = 3",
+    second: "2x + 2y + 2z = 8",
+    three: "3x + 3y + 7z = 12",
   },
   {
     first: generate3x3RandomEquation(),
@@ -571,3 +571,12 @@ const fillWithExampleButtonEl = document.getElementById(
 );
 
 fillWithExampleButtonEl.addEventListener("click", fillEquationsWithExample);
+
+function clearEquations() {
+  firstEquationEl.value = "";
+  secondEquationEl.value = "";
+  if (is3x3LinearSystem) thirdEquationEl.value = "";
+}
+
+const clearEquationsBtnEl = document.getElementById("clear-btn");
+clearEquationsBtnEl.addEventListener("click", clearEquations);
