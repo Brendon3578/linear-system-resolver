@@ -6,20 +6,27 @@
     <title>Sistemas Lineares</title>
     <link rel="stylesheet" href="./styles/output.css" />
   </head>
-  <body class="min-h-screen min-w-full flex justify-center mt-10">
+  <body class="min-h-screen min-w-full flex justify-center my-10">
     <div
-      class="max-w-3xl p-5 border border-gray-400 rounded shadow-lg flex flex-col gap-3 w-full h-min"
+      class="max-w-3xl p-5 border border-gray-400 rounded shadow-lg flex flex-col gap-3 w-full h-min mx-2"
     >
-      <h1 class="text-center text-lg font-bold">Calcular Sistemas Lineares</h1>
+      <h1 class="text-center text-xl font-bold">Resolver Sistemas Lineares</h1>
+      <p class="mb-3">
+        Digite as equações lineares para que seja resolvido as soluções dos
+        sistemas lineares e que seja feita a sua classificação. Escreva
+        incógnitas de X e Y se for um sistema linear 2x2, e Z se for um sistema
+        linear 3x3.
+      </p>
       <div class="flex gap-4 flex-col sm:flex-row">
         <section class="flex flex-col gap-2 w-full">
-          <h3>Digite os sistemas lineares</h3>
+          <h3 class="font-semibold">Digite os sistemas lineares</h3>
+
           <div class="flex flex-col gap-0.5">
-            <span class="text-sm text-gray-700"
+            <span class="text-sm text-gray-800"
               >Escolha o tamanho o sistema</span
             >
             <div class="flex gap-4">
-              <label class="text-sm text-gray-600">
+              <label class="text-sm text-gray-700">
                 <input
                   type="radio"
                   name="sistema-tamanho"
@@ -28,7 +35,7 @@
                 />
                 Sistema 2x2
               </label>
-              <label class="text-sm text-gray-600">
+              <label class="text-sm text-gray-700">
                 <input type="radio" name="sistema-tamanho" value="3x3" />
                 Sistema 3x3
               </label>
@@ -66,19 +73,28 @@
         </section>
         <section class="flex flex-col gap-2 w-full">
           <div>
-            <h3>Sistema linear</h3>
+            <h3 class="mb-1">Sistema linear</h3>
             <div id="linear-system-illustration" class="p-1"></div>
           </div>
           <div>
-            <h3>Sistema linear na representação matricial</h3>
+            <h3 class="mb-1">Sistema linear na representação matricial</h3>
             <div id="matrix-illustration" class="p-1"></div>
+          </div>
+
+          <div class="mt-auto ml-auto">
+            <button
+              id="fill-with-example-btn"
+              class="text-sm px-2 py-0.5 border border-gray-400 text-gray-700 rounded font-semibold bg-white hover:bg-gray-200 ease-in-out duration-150"
+            >
+              Resolver um exemplo
+            </button>
           </div>
         </section>
       </div>
 
       <button
         id="solve-system"
-        class="w-full block p-3 rounded cursor-pointer text-white bg-blue-600 hover:bg-blue-700 shadow font-bold active:scale-95"
+        class="w-full block p-3 rounded cursor-pointer text-white bg-blue-600 hover:bg-blue-700 shadow font-bold active:scale-95 ease-in-out duration-150"
       >
         Resolver
       </button>
@@ -95,7 +111,7 @@
         <div class="flex flex-col sm:flex-row justify-between w-full p-1 gap-2">
           <div class="basis-1/4">
             <h4 class="mb-1">Resultado:</h4>
-            <ul id="result-list" class="list-disc pl-6">
+            <ul id="result-list" class="list-disc pl-5">
               <li>X = <b class="font-bold">?</b></li>
               <li>Y = <b class="font-bold">?</b></li>
             </ul>
@@ -103,7 +119,7 @@
           <div class="basis-3/4">
             <h4 class="mb-1">Resultado das Determinantes:</h4>
 
-            <ul id="determinant-list" class="flex flex-col md:flex-row gap-4">
+            <ul id="determinant-list" class="flex gap-4 flex-wrap">
               <!-- <li class="flex flex-col gap-2 items-center">
                 <span>Determinante de X: 4</span>
                 <div>\( \begin{bmatrix} a & b\\ c & d\ \end{bmatrix} \)</div>

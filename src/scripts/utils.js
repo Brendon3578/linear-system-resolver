@@ -4,11 +4,11 @@
  */
 
 const LOG_COLORS = {
-  info: "#3498db", // azul
+  start: "#3498db", // azul
   determinant: "#e67e22", // laranja
   output: "#b07cc6", // roxo
   storage: "#2ecc71", // verde
-  start: "#f1c40f", // amarelo
+  info: "#f1c40f", // amarelo
 };
 
 /**
@@ -116,11 +116,52 @@ function hasDeterminantsNotEqualsZero(determinants) {
 }
 
 /**
+ * Verifica se um número é Infinity ou -Infinity.
+ * @param {number} number O número a ser verificado.
+ * @returns {boolean} Retorna true se o número for Infinity ou -Infinity, caso contrário, retorna false.
+ * @example
+ * // Retorna true
+ * console.log(isInfinity(Infinity));
+ * // Retorna false
+ * console.log(isInfinity(-5));
+ */
+const isInfinity = (number) => !isFinite(number);
+
+/**
  * Verifica se um determinante dado não é igual a zero.
  * @param {number} det O valor do determinante a ser verificado.
  * @returns {boolean} Retorna true se o determinante não for zero, false caso contrário.
  */
 const isDeterminantNotEqualsZero = (det) => det !== 0;
+
+// Expressão regular para verificar o padrão da equação
+const equationPattern = /^(-?\d*x)?([-+]\d*y)?([-+]\d*z)?=?(-?\d+)$/;
+/**
+ * Verifica se uma equação linear é válida.
+ * @param {string} eq A equação linear a ser validada.
+ * @returns {boolean} true se a equação for válida, false caso contrário.
+ */
+function isEquationValid(eq) {
+  // Remove espaços em branco
+  eq = eq.replace(/\s/g, "");
+
+  // Testar se a equação corresponde ao padrão
+  if (equationPattern.test(eq)) {
+    return true; // A equação é válida
+  } else {
+    return false; // A equação é inválida
+  }
+}
+
+/**
+ * Gera um número aleatório dentro de um intervalo específico.
+ * @param {number} min O valor mínimo do intervalo (incluído).
+ * @param {number} max O valor máximo do intervalo (excluído).
+ * @returns {number} Um número aleatório dentro do intervalo especificado.
+ */
+function generateRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
 
 export {
   isMatrixNxN,
@@ -133,4 +174,7 @@ export {
   isDeterminantNotEqualsZero,
   areAllDeterminantsZero,
   hasDeterminantsNotEqualsZero,
+  isInfinity,
+  isEquationValid,
+  generateRandomNumber,
 };

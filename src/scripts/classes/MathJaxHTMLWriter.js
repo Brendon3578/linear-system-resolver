@@ -16,6 +16,14 @@ class MathJaxHTMLWriter {
     this.#matrixIllustrationEl = matrixIllustrationEl;
     this.#linearSystemIllustrationEl = linearSystemIllustrationEl;
 
+    this.drawInitial2x2MatrixRepresentationAndLinearSystem();
+  }
+
+  async updateMathJax() {
+    await MathJax.typesetPromise();
+  }
+
+  drawInitial2x2MatrixRepresentationAndLinearSystem() {
     const initialCoefficientMatrix = [
       ["a", "b"],
       ["c", "d"],
@@ -30,8 +38,20 @@ class MathJaxHTMLWriter {
     this.drawn2x2LinearSystem(initialCoefficientMatrix, initialConstantMatrix);
   }
 
-  async updateMathJax() {
-    await MathJax.typesetPromise();
+  drawInitial3x3MatrixRepresentationAndLinearSystem() {
+    const initialCoefficientMatrix = [
+      ["a", "b", "c"],
+      ["d", "e", "f"],
+      ["g", "h", "i"],
+    ];
+
+    const initialConstantMatrix = ["1", "2", "3"];
+
+    this.drawn3x3MatrixRepresentation(
+      initialCoefficientMatrix,
+      initialConstantMatrix
+    );
+    this.drawn3x3LinearSystem(initialCoefficientMatrix, initialConstantMatrix);
   }
 
   /**
@@ -45,7 +65,7 @@ class MathJaxHTMLWriter {
         // Se for o primeiro elemento da linha, converte para string e retorna
         if (columnIndex === 0) {
           // não mostrar 1x, mas sim apenas a incógnita x
-          console.log(value);
+          // console.log(value);
           if (value == -1 || value == 1) {
             if (value.toString() == "1") return " ";
             if (value.toString() == "-1") return "-";

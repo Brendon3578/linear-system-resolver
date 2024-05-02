@@ -1,9 +1,12 @@
 import { MathJaxHTMLWriter } from "./classes/MathJaxHTMLWriter.js";
 import {
   areAllDeterminantsZero,
+  generateRandomNumber,
   hasDeterminantsNotEqualsZero,
   isDeterminantEqualsZero,
-  isDeterminantNotEqualsZero,
+  isEquationValid,
+  isInfinity,
+  isNumber,
   log,
   roundToThreeDecimalPlaces,
   writeMatrix,
@@ -30,16 +33,15 @@ const mathJaxHTMLWriter = new MathJaxHTMLWriter(
   linearSystemDrawnEl
 );
 
-function showStatusMessage(status) {
+function showStatusMessage(status, message) {
   statusMessageEl.classList.value = "";
   switch (status) {
     case "success":
-      statusMessageEl.innerText = "Cálculo realizado com sucesso";
+      statusMessageEl.innerText = message;
       statusMessageEl.classList.value = "text-green-700 font-bold";
       break;
     case "error":
-      statusMessageEl.innerText =
-        "As equações não foram digitadas corretamente.";
+      statusMessageEl.innerText = message;
       statusMessageEl.classList.value = "text-red-600 font-bold";
       break;
   }
@@ -63,11 +65,13 @@ linearSystemSizeRadioButtonsEl.forEach((radioButtonEl) => {
       is3x3LinearSystem = false;
       firstEquationEl.placeholder = "Ex: 2x + 3y = 6";
       secondEquationEl.placeholder = "Ex: 4x - 2y = 8";
+      mathJaxHTMLWriter.drawInitial2x2MatrixRepresentationAndLinearSystem();
     } else if (systemSize == "3x3") {
       showThirdEquation(true);
       is3x3LinearSystem = true;
       firstEquationEl.placeholder = "Ex: x + 2y + z = 2";
       secondEquationEl.placeholder = "Ex: 2x + y + 2z = 9";
+      mathJaxHTMLWriter.drawInitial3x3MatrixRepresentationAndLinearSystem();
     }
   });
 });
@@ -94,11 +98,11 @@ function solveSystem() {
     determinantListEl.innerHTML = "";
     systemsClassificationTextEl.innerHTML = "";
 
-    let eq1 = firstEquationEl.value;
-    let eq2 = secondEquationEl.value;
+    const eq1 = firstEquationEl.value;
+    const eq2 = secondEquationEl.value;
 
-    const coeffs_eq1 = extractCoefficients(eq1);
-    const coeffs_eq2 = extractCoefficients(eq2);
+    const coeffs_eq1 = extractCoefficients(eq1, firstEquationEl);
+    const coeffs_eq2 = extractCoefficients(eq2, secondEquationEl);
 
     let equationResultOutput = {
       classification: { type: "", message: "" },
@@ -117,7 +121,7 @@ function solveSystem() {
       equationResultOutput.message = message;
     } else {
       let eq3 = thirdEquationEl.value;
-      const coeffs_eq3 = extractCoefficients(eq3);
+      const coeffs_eq3 = extractCoefficients(eq3, thirdEquationEl);
       const { resolutions, determinants, classification, message } =
         solve3x3System(coeffs_eq1, coeffs_eq2, coeffs_eq3);
 
@@ -128,10 +132,21 @@ function solveSystem() {
     }
 
     equationResultOutput.resolutions.forEach((solution) => {
-      const result = roundToThreeDecimalPlaces(solution.value);
+      let result = isNumber(solution.value)
+        ? roundToThreeDecimalPlaces(solution.value)
+        : solution.value;
+
+      if (isInfinity(result) && !isNaN(result)) {
+        // console.log(result);
+        result = result.toString().replace("Infinity", "&infin;");
+      } else if (isNaN(result)) {
+        result = "Indeterminado";
+      }
+
       const unknown = solution.unknown.toUpperCase();
+      const determinantCalc = solution.determinantCalc;
       resultListEl.innerHTML += `<li title="Resultado de ${unknown} é igual a ${result}">
-      ${unknown} = <b class="font-bold">${result}</b></li>`;
+      ${unknown} = <b class="font-bold">${result}</b> (${determinantCalc})</li>`;
     });
 
     equationResultOutput.determinants.forEach((determinant) => {
@@ -139,10 +154,10 @@ function solveSystem() {
       const unknown = determinant.unknown.toUpperCase();
       determinantListEl.innerHTML += `
       <li
-        class="flex flex-col gap-2 items-center justify-between rounded-md shadow-lg p-2 pb-4 border border-gray-400 w-full bg-gradient-to-t from-gray-200 to-white"
+        class="flex flex-col gap-2 items-center justify-between rounded-md shadow-lg p-2 pb-4 border border-gray-400 w-full bg-gradient-to-t from-gray-200 to-white max-w-min"
         title="Resultado da determinante de ${unknown} é igual a ${result}"
       >
-        <span class="text-sm font-semibold">Det. de ${unknown} = ${result}</span>
+        <span class="text-sm font-semibold whitespace-nowrap">Det. de ${unknown} = ${result}</span>
         <div>${determinant.matrixHTML}</div>
       </li>`;
     });
@@ -159,10 +174,17 @@ function solveSystem() {
     systemsClassificationTextEl.innerHTML = `<span class=' ${classificationTextColor} font-bold'> ${equationResultOutput.classification.message} </span>`;
     mathJaxHTMLWriter.updateMathJax();
 
-    showStatusMessage("success");
+    showStatusMessage("success", equationResultOutput.message);
   } catch (e) {
-    console.error(e);
-    showStatusMessage("error");
+    console.error(e.message);
+    showStatusMessage(
+      "error",
+      e.message || "Não foi possível realizar o cálculo."
+    );
+
+    if (!is3x3LinearSystem)
+      mathJaxHTMLWriter.drawInitial2x2MatrixRepresentationAndLinearSystem();
+    else mathJaxHTMLWriter.drawInitial3x3MatrixRepresentationAndLinearSystem();
   }
 }
 
@@ -201,6 +223,14 @@ function solve2x2System(coeffs_eq1, coeffs_eq2) {
     [a, x],
     [c, y],
   ];
+
+  // Verificar se deu erro no cálculo
+  [a, b, c, d, x, y].forEach((number) => {
+    if (!isNumber(number)) {
+      throw new Error("As equações não foram digitadas corretamente!");
+    }
+  });
+
   log("determinant", "Será calculada a determinante da matriz X:");
   const detX = calculateDeterminant2x2(determinantXMatrix);
 
@@ -241,29 +271,17 @@ function solve2x2System(coeffs_eq1, coeffs_eq2) {
       classificationOutput.message =
         "Sistema Impossível (SI) - O sistema não tem solução";
     }
-
-    const equationResultOutput = {
-      classification: classificationOutput,
-      message: messageOutput,
-      resolutions: [],
-      determinants: determinantsOutput,
-    };
-    return equationResultOutput;
   }
 
-  const xResult = detX / detMain;
-  const yResult = detY / detMain;
-
-  // [x, y].forEach((number) => {
-  //   if (isNaN(number)) throw new Error("Cálculo errado");
-  // });
+  let xResult = detX / detMain;
+  let yResult = detY / detMain;
 
   const equationResultOutput = {
     classification: classificationOutput,
     message: messageOutput,
     resolutions: [
-      { unknown: "x", value: xResult },
-      { unknown: "y", value: yResult },
+      { unknown: "x", value: xResult, determinantCalc: `${detX} / ${detMain}` },
+      { unknown: "y", value: yResult, determinantCalc: `${detY} / ${detMain}` },
     ],
     determinants: determinantsOutput,
   };
@@ -272,9 +290,9 @@ function solve2x2System(coeffs_eq1, coeffs_eq2) {
 }
 
 function solve3x3System(coeffs_eq1, coeffs_eq2, coeffs_eq3) {
-  console.log(coeffs_eq1);
-  console.log(coeffs_eq2);
-  console.log(coeffs_eq3);
+  // console.log(coeffs_eq1);
+  // console.log(coeffs_eq2);
+  // console.log(coeffs_eq3);
   const [a, b, c] = coeffs_eq1.slice(0, 3);
   const [d, e, f] = coeffs_eq2.slice(0, 3);
   const [g, h, i] = coeffs_eq3.slice(0, 3);
@@ -288,6 +306,13 @@ function solve3x3System(coeffs_eq1, coeffs_eq2, coeffs_eq3) {
     [d, e, f],
     [g, h, i],
   ];
+
+  // Verificar se deu erro no cálculo
+  [a, b, c, d, e, f, g, h, i, x, y, z].forEach((number) => {
+    if (!isNumber(number)) {
+      throw new Error("As equações não foram digitadas corretamente!");
+    }
+  });
 
   log("determinant", "Será calculada a determinante da matriz A:");
   const detMain = calculateDeterminant3x3(determinantMainMatrix);
@@ -318,8 +343,10 @@ function solve3x3System(coeffs_eq1, coeffs_eq2, coeffs_eq3) {
   ];
   log("determinant", "Será calculada a determinante da matriz X:");
   const detX = calculateDeterminant3x3(determinantXMatrix);
+
   log("determinant", "Será calculada a determinante da matriz Y:");
   const detY = calculateDeterminant3x3(determinantYMatrix);
+
   log("determinant", "Será calculada a determinante da matriz Z:");
   const detZ = calculateDeterminant3x3(determinantZMatrix);
 
@@ -350,7 +377,7 @@ function solve3x3System(coeffs_eq1, coeffs_eq2, coeffs_eq3) {
     type: "SPD",
     message: "Sistema Possível Determinado (SPD) - O sistema uma solução",
   };
-  let messageOutput = "Cálculo realizado com sucesso";
+  let messageOutput = "Cálculo realizado com sucesso.";
 
   if (isDeterminantEqualsZero(detMain)) {
     if (areAllDeterminantsZero([detX, detY, detZ])) {
@@ -362,13 +389,6 @@ function solve3x3System(coeffs_eq1, coeffs_eq2, coeffs_eq3) {
       classificationOutput.message =
         "Sistema Impossível (SI) - O sistema não tem solução";
     }
-    const equationResultOutput = {
-      classification: classificationOutput,
-      message: messageOutput,
-      resolutions: [],
-      determinants: determinantsOutput,
-    };
-    return equationResultOutput;
   }
 
   const xResult = detX / detMain;
@@ -379,9 +399,9 @@ function solve3x3System(coeffs_eq1, coeffs_eq2, coeffs_eq3) {
     classification: classificationOutput,
     message: messageOutput,
     resolutions: [
-      { unknown: "x", value: xResult },
-      { unknown: "y", value: yResult },
-      { unknown: "z", value: zResult },
+      { unknown: "x", value: xResult, determinantCalc: `${detX} / ${detMain}` },
+      { unknown: "y", value: yResult, determinantCalc: `${detY} / ${detMain}` },
+      { unknown: "z", value: zResult, determinantCalc: `${detZ} / ${detMain}` },
     ],
     determinants: determinantsOutput,
   };
@@ -389,7 +409,31 @@ function solve3x3System(coeffs_eq1, coeffs_eq2, coeffs_eq3) {
   return equationResultOutput;
 }
 
-function extractCoefficients(eq) {
+/**
+ * @param {string} eq
+ * @returns
+ */
+function extractCoefficients(eq, elementToFocusIfError) {
+  let unknowns = ["x", "y"];
+  if (is3x3LinearSystem) unknowns.push("z");
+
+  let missingUnknown = ""; // Variável para armazenar a incógnita ausente, inicializada como uma string vazia
+
+  const hasAllUnknowns = unknowns.every((unknown) => {
+    if (!eq.includes(unknown)) {
+      missingUnknown = unknown; // Armazena a incógnita ausente
+      return false; // Retorna false para parar a iteração
+    }
+    return true; // Retorna true se a incógnita estiver presente
+  });
+
+  if (!hasAllUnknowns) {
+    elementToFocusIfError.focus();
+    throw new Error(
+      `A incógnita "${missingUnknown.toUpperCase()}" está faltando em uma das equações!`
+    );
+  }
+
   // Verifica se a equação contém a incógnita z
   const is3x3 = /z/i.test(eq);
 
@@ -400,7 +444,9 @@ function extractCoefficients(eq) {
 
   // Realiza correspondência com o padrão
   const matches = eq.match(pattern);
-  console.log(matches);
+  if (matches == null || !isEquationValid(eq)) {
+    throw new Error("As equações não foram digitadas corretamente!");
+  }
 
   // Extrai os coeficientes com base no número de incógnitas
   let coefficientX = parseInt(matches[1] || "1");
@@ -422,7 +468,6 @@ function extractCoefficients(eq) {
 
 function calculateDeterminant2x2(matrix) {
   console.log(writeMatrix(matrix));
-  // console.log(matrix);
 
   const [a, b] = matrix[0];
   const [c, d] = matrix[1];
@@ -432,8 +477,97 @@ function calculateDeterminant2x2(matrix) {
 }
 
 function calculateDeterminant3x3(matrix) {
+  console.log(writeMatrix(matrix));
+
   const [a, b, c] = matrix[0];
   const [d, e, f] = matrix[1];
   const [g, h, i] = matrix[2];
-  return a * e * i + b * f * g + c * d * h - c * e * g - b * d * i - a * f * h;
+  const determinant =
+    a * e * i + b * f * g + c * d * h - c * e * g - b * d * i - a * f * h;
+  log("output", `Determinante: ${determinant}`);
+  return determinant;
 }
+
+function generate2x2RandomEquation() {
+  return `${generateRandomNumber(0, 10)}x + ${generateRandomNumber(
+    0,
+    10
+  )}y = ${generateRandomNumber(0, 10)}`;
+}
+
+function generate3x3RandomEquation() {
+  return `${generateRandomNumber(0, 10)}x + ${generateRandomNumber(
+    0,
+    10
+  )}y + ${generateRandomNumber(0, 10)}z = ${generateRandomNumber(0, 10)}`;
+}
+
+const sample2x2Equations = [
+  { first: "2x + 3y = 7", second: "4x + 6y = 10" },
+  { first: "2x + 3y = 8", second: "4x + 2y = 10" },
+  { first: "2x + 3y = 6", second: "4x + 6y = 12" },
+  {
+    first: generate2x2RandomEquation(),
+    second: generate2x2RandomEquation(),
+  },
+];
+
+const sample3x3Equations = [
+  {
+    first: "x + 2y +z = 4",
+    second: "2x + 4y + 2z = 8",
+    three: "3x + 6y + 3z = 12",
+  },
+  {
+    first: "x + 2y +z = 4",
+    second: "2x + 3y + 4z = 10",
+    three: "3x + 4y + 5z = 16",
+  },
+  {
+    first: "x + 2y +z = 4",
+    second: "2x + 4y + 2z = 8",
+    three: "3x + 6y + 3z = 12",
+  },
+  {
+    first: generate3x3RandomEquation(),
+    second: generate3x3RandomEquation(),
+    three: generate3x3RandomEquation(),
+  },
+];
+
+let beforeRandomIndex = -1;
+
+function fillEquationsWithExample() {
+  if (!is3x3LinearSystem) {
+    let randomIndex = Math.floor(Math.random() * sample2x2Equations.length);
+    log("info", `Index selecionado: ${randomIndex}`);
+    while (randomIndex == beforeRandomIndex) {
+      randomIndex = Math.floor(Math.random() * sample2x2Equations.length);
+      log("info", `Selecionado novo index: ${randomIndex}`);
+    }
+    beforeRandomIndex = randomIndex;
+
+    let sampleEquation = sample2x2Equations[randomIndex];
+    firstEquationEl.value = sampleEquation.first;
+    secondEquationEl.value = sampleEquation.second;
+  } else {
+    let randomIndex = Math.floor(Math.random() * sample3x3Equations.length);
+    log("info", `Index selecionado: ${randomIndex}`);
+    while (randomIndex == beforeRandomIndex) {
+      log("info", `Selecionado novo index: ${randomIndex}`);
+      randomIndex = Math.floor(Math.random() * sample2x2Equations.length);
+    }
+    beforeRandomIndex = randomIndex;
+
+    let sampleEquation = sample3x3Equations[randomIndex];
+    firstEquationEl.value = sampleEquation.first;
+    secondEquationEl.value = sampleEquation.second;
+    thirdEquationEl.value = sampleEquation.three;
+  }
+  solveSystem();
+}
+const fillWithExampleButtonEl = document.getElementById(
+  "fill-with-example-btn"
+);
+
+fillWithExampleButtonEl.addEventListener("click", fillEquationsWithExample);
