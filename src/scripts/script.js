@@ -28,6 +28,21 @@ const linearSystemDrawnEl = document.getElementById(
 );
 const matrixDrawnEl = document.getElementById("matrix-illustration");
 
+const linearSystemSizeRadioButtonsEl = document.querySelectorAll(
+  'input[name="sistema-tamanho"]'
+);
+const thirdEquationContainerEl = document.getElementById(
+  "third-equation-label"
+);
+
+const resultListEl = document.getElementById("result-list");
+const determinantListEl = document.getElementById("determinant-list");
+const systemsClassificationTextEl = document.getElementById(
+  "system-classification"
+);
+
+let is3x3LinearSystem = false;
+
 const mathJaxHTMLWriter = new MathJaxHTMLWriter(
   matrixDrawnEl,
   linearSystemDrawnEl
@@ -45,15 +60,6 @@ function showStatusMessage(status, message) {
       break;
   }
 }
-
-const linearSystemSizeRadioButtonsEl = document.querySelectorAll(
-  'input[name="sistema-tamanho"]'
-);
-const thirdEquationContainerEl = document.getElementById(
-  "third-equation-label"
-);
-
-let is3x3LinearSystem = false;
 
 linearSystemSizeRadioButtonsEl.forEach((radioButtonEl) => {
   radioButtonEl.addEventListener("change", () => {
@@ -74,12 +80,6 @@ linearSystemSizeRadioButtonsEl.forEach((radioButtonEl) => {
     }
   });
 });
-
-const resultListEl = document.getElementById("result-list");
-const determinantListEl = document.getElementById("determinant-list");
-const systemsClassificationTextEl = document.getElementById(
-  "system-classification"
-);
 
 function showThirdEquation(show) {
   if (show) {
@@ -289,9 +289,6 @@ function solve2x2System(coeffs_eq1, coeffs_eq2) {
 }
 
 function solve3x3System(coeffs_eq1, coeffs_eq2, coeffs_eq3) {
-  // console.log(coeffs_eq1);
-  // console.log(coeffs_eq2);
-  // console.log(coeffs_eq3);
   const [a, b, c] = coeffs_eq1.slice(0, 3);
   const [d, e, f] = coeffs_eq2.slice(0, 3);
   const [g, h, i] = coeffs_eq3.slice(0, 3);
@@ -490,18 +487,24 @@ function calculateDeterminant3x3(matrix) {
   return determinant;
 }
 
-function generate2x2RandomEquation() {
-  return `${generateRandomNumber(0, 10)}x + ${generateRandomNumber(
-    0,
-    10
-  )}y = ${generateRandomNumber(0, 10)}`;
+function generateRandomEquation(numVariables) {
+  let equation = "";
+  for (let i = 0; i < numVariables; i++) {
+    if (i > 0) equation += " + ";
+    equation += `${generateRandomNumber(0, 10)}${String.fromCharCode(120 + i)}`;
+  }
+  equation += ` = ${generateRandomNumber(0, 10)}`;
+  return equation;
 }
 
+// Gerar uma equação 2x2:
+function generate2x2RandomEquation() {
+  return generateRandomEquation(2);
+}
+
+// Gerar uma equação 3x3:
 function generate3x3RandomEquation() {
-  return `${generateRandomNumber(0, 10)}x + ${generateRandomNumber(
-    0,
-    10
-  )}y + ${generateRandomNumber(0, 10)}z = ${generateRandomNumber(0, 10)}`;
+  return generateRandomEquation(3);
 }
 
 const sample2x2Equations = [
