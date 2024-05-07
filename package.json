@@ -1,15 +1,31 @@
 {
   "name": "matriz-calculator",
-  "version": "1.0.0",
-  "description": "",
+  "version": "2.0.0",
+  "description": "Utilize essa calculadora de sistemas lineares para resolver e classificar sistemas de equações lineares.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tailwind": "npx tailwindcss -i ./src/styles/input.css -o ./src/styles/output.css --watch"
   },
-  "keywords": [],
+  "keywords": [
+    "Sistemas Lineares",
+    "Calculadora",
+    "Solver",
+    "Equações Lineares",
+    "Álgebra Linear",
+    "Resolução de Sistemas",
+    "Classificação de Sistemas",
+    "Matrizes",
+    "Vetores",
+    "Matemática",
+    "Ferramenta Online",
+    "Matemática Computacional",
+    "Solver de Equações",
+    "Algoritmo Linear",
+    "Aplicativo de Matemática"
+  ],
   "author": "Brendon Gomes",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "tailwindcss": "^3.4.3"
   }

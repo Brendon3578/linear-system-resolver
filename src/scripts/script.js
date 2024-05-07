@@ -155,11 +155,15 @@ function solveSystem() {
       const unknown = determinant.unknown.toUpperCase();
       determinantListEl.innerHTML += `
       <li
-        class="flex flex-col gap-2 items-center justify-between rounded-md shadow-lg p-2 pb-4 border border-gray-400 w-full bg-gradient-to-t from-gray-200 to-white max-w-min dark:border-slate-700 dark:from-slate-900 dark:to-slate-800"
+        class="rounded-md shadow-lg p-2 pb-4 border border-gray-400 w-full bg-gradient-to-t from-gray-200 to-white max-w-min dark:border-slate-700 dark:from-slate-900 dark:to-slate-800"
         title="Resultado da determinante de ${unknown} é igual a ${determinant.result}"
       >
-        <span class="text-sm font-semibold whitespace-nowrap">Det. de ${unknown} = ${result}</span>
-        <div>${determinant.matrixHTML}</div>
+        <figure class="flex flex-col gap-2 items-center justify-between ">
+          <figcaption>
+            <span class="text-sm font-semibold whitespace-nowrap">Det. de ${unknown} = ${result}</span>
+          </figcaption>
+          <div>${determinant.matrixHTML}</div>
+        </figure>
       </li>`;
     });
 

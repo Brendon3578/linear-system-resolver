@@ -24,6 +24,10 @@ Este projeto é uma simples página, feita com HTML, CSS e principalmente em Jav
 
    A página abrirá em seu navegador, onde você poderá inserir as equações dos sistemas lineares, que pode ser do tipo 2x2 ou 3x3. Em seguida. O programa fornecerá a solução do sistema linear usando o método de Cramer e mostrará também a representação matricial o sistema linear, e classificará o sistema linear.
 
+## Licença
+
+Este projeto é licenciado sob a [Licença MIT](./LICENSE).
+
 ---
 
 <h3 align="center">
