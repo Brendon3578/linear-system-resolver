@@ -53,10 +53,12 @@ function showStatusMessage(status, message) {
   statusMessageEl.innerText = message;
   switch (status) {
     case "success":
-      statusMessageEl.classList.value = "text-green-700 font-bold";
+      statusMessageEl.classList.value =
+        "text-green-700 font-bold dark:text-green-400";
       break;
     case "error":
-      statusMessageEl.classList.value = "text-red-600 font-bold";
+      statusMessageEl.classList.value =
+        "text-red-600 font-bold dark:text-red-400";
       break;
   }
 }
@@ -153,7 +155,7 @@ function solveSystem() {
       const unknown = determinant.unknown.toUpperCase();
       determinantListEl.innerHTML += `
       <li
-        class="flex flex-col gap-2 items-center justify-between rounded-md shadow-lg p-2 pb-4 border border-gray-400 w-full bg-gradient-to-t from-gray-200 to-white max-w-min"
+        class="flex flex-col gap-2 items-center justify-between rounded-md shadow-lg p-2 pb-4 border border-gray-400 w-full bg-gradient-to-t from-gray-200 to-white max-w-min dark:border-slate-700 dark:from-slate-900 dark:to-slate-800"
         title="Resultado da determinante de ${unknown} é igual a ${determinant.result}"
       >
         <span class="text-sm font-semibold whitespace-nowrap">Det. de ${unknown} = ${result}</span>
@@ -162,9 +164,9 @@ function solveSystem() {
     });
 
     let classificationTextColors = {
-      SI: "text-indigo-700",
-      SPD: "text-teal-700",
-      SPI: "text-blue-700",
+      SI: "text-violet-700 dark:text-violet-400",
+      SPD: "text-teal-700 dark:text-teal-400",
+      SPI: "text-blue-700 dark:text-blue-400",
     };
 
     let classificationTextColor =
@@ -272,8 +274,11 @@ function solve2x2System(coeffs_eq1, coeffs_eq2) {
     }
   }
 
-  let xResult = detX / detMain;
-  let yResult = detY / detMain;
+  const xResult = detX / detMain;
+  const yResult = detY / detMain;
+
+  log("output", `Resultado de X = ${xResult}`);
+  log("output", `Resultado de Y = ${yResult}`);
 
   const equationResultOutput = {
     classification: classificationOutput,
@@ -390,6 +395,10 @@ function solve3x3System(coeffs_eq1, coeffs_eq2, coeffs_eq3) {
   const xResult = detX / detMain;
   const yResult = detY / detMain;
   const zResult = detZ / detMain;
+
+  log("output", `Resultado de X = ${xResult}`);
+  log("output", `Resultado de Y = ${yResult}`);
+  log("output", `Resultado de Z = ${zResult}`);
 
   const equationResultOutput = {
     classification: classificationOutput,
@@ -545,10 +554,10 @@ let beforeRandomIndex = -1;
 function fillEquationsWithExample() {
   if (!is3x3LinearSystem) {
     let randomIndex = Math.floor(Math.random() * sample2x2Equations.length);
-    log("info", `Index selecionado: ${randomIndex}`);
+    // log("info", `Index selecionado: ${randomIndex}`);
     while (randomIndex == beforeRandomIndex) {
       randomIndex = Math.floor(Math.random() * sample2x2Equations.length);
-      log("info", `Selecionado novo index: ${randomIndex}`);
+      // log("info", `Selecionado novo index: ${randomIndex}`);
     }
     beforeRandomIndex = randomIndex;
 
@@ -557,9 +566,9 @@ function fillEquationsWithExample() {
     secondEquationEl.value = sampleEquation.second;
   } else {
     let randomIndex = Math.floor(Math.random() * sample3x3Equations.length);
-    log("info", `Index selecionado: ${randomIndex}`);
+    // log("info", `Index selecionado: ${randomIndex}`);
     while (randomIndex == beforeRandomIndex) {
-      log("info", `Selecionado novo index: ${randomIndex}`);
+      // log("info", `Selecionado novo index: ${randomIndex}`);
       randomIndex = Math.floor(Math.random() * sample2x2Equations.length);
     }
     beforeRandomIndex = randomIndex;

@@ -6,6 +6,7 @@
 class MathJaxHTMLWriter {
   #matrixIllustrationEl;
   #linearSystemIllustrationEl;
+  #isMathJaxConnected = true;
 
   /**
    * Cria uma instância de MathJaxHTMLWriter.
@@ -33,13 +34,31 @@ class MathJaxHTMLWriter {
    * @returns {Promise<void>} Uma promessa que é resolvida quando a renderização é concluída.
    */
   async updateMathJax() {
-    await MathJax.typesetPromise();
+    try {
+      await MathJax.typesetPromise();
+      this.#isMathJaxConnected = true;
+    } catch (e) {
+      if (this.#isMathJaxConnected) {
+        window.alert(
+          [
+            "É necessário estar conectado à internet para que seja utilizado a biblioteca MathJax",
+            "Ela é necessária para poder escrever as matrizes e os sistemas lineares",
+          ].join("\n")
+        );
+        this.#linearSystemIllustrationEl.innerHTML = "";
+        this.#matrixIllustrationEl.innerHTML = "";
+      }
+      console.log(e);
+      this.#isMathJaxConnected = false;
+    }
   }
 
   /**
    * Desenha a representação inicial de uma matriz 2x2 e um sistema linear.
    */
   drawInitial2x2MatrixRepresentationAndLinearSystem() {
+    if (!this.#isMathJaxConnected) return;
+
     const initialCoefficientMatrix = [
       ["a", "b"],
       ["c", "d"],
@@ -58,6 +77,8 @@ class MathJaxHTMLWriter {
    * Desenha a representação inicial de uma matriz 3x3 e um sistema linear.
    */
   drawInitial3x3MatrixRepresentationAndLinearSystem() {
+    if (!this.#isMathJaxConnected) return;
+
     const initialCoefficientMatrix = [
       ["a", "b", "c"],
       ["d", "e", "f"],
@@ -117,6 +138,8 @@ class MathJaxHTMLWriter {
    * @param {Array<string>} constantMatrix - A matriz de constantes.
    */
   drawn2x2MatrixRepresentation(coefficientMatrix, constantMatrix) {
+    if (!this.#isMathJaxConnected) return;
+
     const [a, b] = coefficientMatrix[0];
     const [c, d] = coefficientMatrix[1];
     const [x, y] = constantMatrix;
@@ -133,6 +156,8 @@ class MathJaxHTMLWriter {
    * @returns {string} A representação escrita em MathJax da matriz.
    */
   write2x2Matrix(matrix) {
+    if (!this.#isMathJaxConnected) return;
+
     const [a, b] = matrix[0];
     const [c, d] = matrix[1];
     return `
@@ -146,6 +171,8 @@ class MathJaxHTMLWriter {
    * @returns {string} A representação escrita em MatJax da matriz.
    */
   write3x3Matrix(matrix) {
+    if (!this.#isMathJaxConnected) return;
+
     const [a, b, c] = matrix[0];
     const [d, e, f] = matrix[1];
     const [g, h, i] = matrix[2];
@@ -160,6 +187,8 @@ class MathJaxHTMLWriter {
    * @param {Array<string>} constantMatrix - A matriz de constantes.
    */
   drawn3x3MatrixRepresentation(coefficientMatrix, constantMatrix) {
+    if (!this.#isMathJaxConnected) return;
+
     const [a, b, c] = coefficientMatrix[0];
     const [d, e, f] = coefficientMatrix[1];
     const [g, h, i] = coefficientMatrix[2];
@@ -177,6 +206,8 @@ class MathJaxHTMLWriter {
    * @param {Array<string>} constantMatrix - A matriz de constantes.
    */
   drawn2x2LinearSystem(coefficientMatrix, constantMatrix) {
+    if (!this.#isMathJaxConnected) return;
+
     const matrix = this.#stringifyMatrixElements(coefficientMatrix.slice());
 
     let [a, b] = matrix[0];
@@ -196,6 +227,8 @@ class MathJaxHTMLWriter {
    * @param {Array<string>} constantMatrix - A matriz de constantes.
    */
   drawn3x3LinearSystem(coefficientMatrix, constantMatrix) {
+    if (!this.#isMathJaxConnected) return;
+
     const matrix = this.#stringifyMatrixElements(coefficientMatrix.slice());
 
     const [a, b, c] = matrix[0];

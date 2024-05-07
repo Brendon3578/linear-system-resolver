@@ -1,6 +1,6 @@
 /**
  * Função responsável por exibir uma mensagem informativa, de alerta ou executar uma operação de espera ou armazenamento.
- * @typedef {("info"|"determinant"|"output"|"storage"|"start"|"round")} ActionType
+ * @typedef {("info"|"determinant"|"output"|"storage"|"start"|"round"|"dark")} ActionType
  */
 
 const LOG_COLORS = {
@@ -9,6 +9,7 @@ const LOG_COLORS = {
   output: "#b07cc6", // roxo
   storage: "#2ecc71", // verde
   info: "#f1c40f", // amarelo
+  dark: "#f5f5f5", // amarelo
 };
 
 /**

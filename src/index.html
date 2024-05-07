@@ -4,43 +4,80 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="./assets/favicon.png" />
-    <title>Resolver Sistemas Lineares e Classificação</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+
     <link rel="stylesheet" href="./styles/output.css" />
+    <title>Resolver Sistemas Lineares e Classificação</title>
   </head>
   <body
-    class="min-h-screen min-w-full flex flex-col items-center justify-center my-10 px-2"
+    class="min-h-screen min-w-full flex flex-col items-center justify-center my-10 px-2 dark:bg-slate-900"
   >
     <div
-      class="max-w-3xl p-5 border border-gray-400 rounded shadow-lg flex flex-col gap-3 w-full h-min"
+      class="relative max-w-3xl p-5 border border-gray-400 rounded-md shadow-lg flex flex-col gap-3 w-full h-min dark:border-slate-700 dark:bg-slate-800 dark:text-white"
     >
+      <button
+        class="group absolute right-2 top-2 border-transparent hover:border-gray-300 border p-1 rounded shadow-none hover:shadow hover:bg-gray-100 dark:hover:border-slate-600 dark:hover:bg-slate-700 transition-all duration-200"
+        title="Trocar para o modo escuro"
+        id="switch-dark-mode"
+      >
+        <span class="sr-only">Trocar para o modo claro ou modo escuro</span>
+        <!-- prettier-ignore -->
+        <span class="text-slate-400 dark:hidden group-hover:text-blue-500 transition-all duration-200">
+          <span class="sr-only">Trocar para modo escuro</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path d="M12 2.25a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75ZM7.5 12a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM18.894 6.166a.75.75 0 0 0-1.06-1.06l-1.591 1.59a.75.75 0 1 0 1.06 1.061l1.591-1.59ZM21.75 12a.75.75 0 0 1-.75.75h-2.25a.75.75 0 0 1 0-1.5H21a.75.75 0 0 1 .75.75ZM17.834 18.894a.75.75 0 0 0 1.06-1.06l-1.59-1.591a.75.75 0 1 0-1.061 1.06l1.59 1.591ZM12 18a.75.75 0 0 1 .75.75V21a.75.75 0 0 1-1.5 0v-2.25A.75.75 0 0 1 12 18ZM7.758 17.303a.75.75 0 0 0-1.061-1.06l-1.591 1.59a.75.75 0 0 0 1.06 1.061l1.591-1.59ZM6 12a.75.75 0 0 1-.75.75H3a.75.75 0 0 1 0-1.5h2.25A.75.75 0 0 1 6 12ZM6.697 7.757a.75.75 0 0 0 1.06-1.06l-1.59-1.591a.75.75 0 0 0-1.061 1.06l1.59 1.591Z" />
+          </svg>
+        </span>
+
+        <!-- prettier-ignore -->
+        <span class="text-slate-500/80 hidden dark:block group-hover:text-yellow-400 transition-all duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 0 1 .162.819A8.97 8.97 0 0 0 9 6a9 9 0 0 0 9 9 8.97 8.97 0 0 0 3.463-.69.75.75 0 0 1 .981.98 10.503 10.503 0 0 1-9.694 6.46c-5.799 0-10.5-4.7-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 0 1 .818.162Z" clip-rule="evenodd" />
+          </svg>
+        </span>
+      </button>
       <h1 class="text-center text-xl font-bold">Resolver Sistemas Lineares</h1>
+
       <p class="mb-3">
         Digite as equações lineares para que seja resolvido as soluções dos
         sistemas lineares e que seja feita a sua classificação. Escreva
         incógnitas de X e Y se for um sistema linear 2x2, e Z se for um sistema
         linear 3x3.
       </p>
-      <div class="flex gap-4 flex-col sm:flex-row">
+      <div class="flex gap-5 flex-col sm:flex-row">
         <section class="flex flex-col gap-2 w-full">
-          <h3 class="font-semibold">Digite os sistemas lineares</h3>
+          <h3 class="font-semibold">Digite as equações lineares</h3>
 
           <div class="flex flex-col gap-0.5">
-            <span class="text-sm text-gray-800"
+            <span class="text-sm text-gray-800 dark:text-gray-100"
               >Escolha o tamanho o sistema</span
             >
-            <div class="flex gap-4">
-              <label class="text-sm text-gray-700">
+            <div class="flex gap-4 text-gray-700 dark:text-gray-200">
+              <label class="text-sm space-x-1">
                 <input
                   type="radio"
                   name="sistema-tamanho"
                   value="2x2"
+                  class="translate-y-px"
                   checked
                 />
-                Sistema 2x2
+                <span> Sistema 2x2 </span>
               </label>
-              <label class="text-sm text-gray-700">
-                <input type="radio" name="sistema-tamanho" value="3x3" />
-                Sistema 3x3
+              <label class="text-sm space-x-1">
+                <input
+                  type="radio"
+                  name="sistema-tamanho"
+                  value="3x3"
+                  class="translate-y-px"
+                />
+                <span> Sistema 3x3 </span>
               </label>
             </div>
           </div>
@@ -51,7 +88,7 @@
               placeholder="Ex: 2x + 3y = 6"
               value="2x + 3y = 6"
               id="equation1"
-              class="p-2 border border-gray-400 rounded w-full shadow"
+              class="py-2 px-4 border border-gray-400 rounded-md w-full shadow bg-white dark:bg-slate-600 dark:border-slate-500 dark:ring-1 dark:ring-slate-900/20 dark:text-slate-200"
             />
           </label>
           <label class="flex flex-col gap-1">
@@ -61,7 +98,7 @@
               placeholder="Ex: 4x - 2y = 8"
               value="4x - 2y = 8"
               id="equation2"
-              class="p-2 border border-gray-400 rounded w-full shadow"
+              class="py-2 px-4 border border-gray-400 rounded-md w-full shadow bg-white dark:bg-slate-600 dark:border-slate-500 dark:ring-1 dark:ring-slate-900/20 dark:text-slate-200"
             />
           </label>
           <label class="flex-col gap-1 hidden" id="third-equation-label">
@@ -70,7 +107,7 @@
               type="text"
               placeholder="Ex: 3x + 3y + 3z = 3"
               id="equation3"
-              class="p-2 border border-gray-400 rounded w-full shadow"
+              class="py-2 px-4 border border-gray-400 rounded-md w-full shadow bg-white dark:bg-slate-600 dark:border-slate-500 dark:ring-1 dark:ring-slate-900/20 dark:text-slate-200"
             />
           </label>
         </section>
@@ -79,14 +116,14 @@
             <h3 class="mb-1">Sistema linear</h3>
             <div
               id="linear-system-illustration"
-              class="p-2 pr-4 border border-gray-400 shadow rounded w-min bg-gradient-to-t from-blue-100 to-gray-50"
+              class="p-2 pr-4 border border-gray-400 shadow rounded w-min bg-gradient-to-t from-blue-100 to-gray-50 dark:border-slate-500 dark:from-slate-800 dark:to-slate-700 dark:ring-1 dark:ring-inset dark:ring-slate-900/10"
             ></div>
           </div>
           <div>
             <h3 class="mb-1">Sistema linear na representação matricial</h3>
             <div
               id="matrix-illustration"
-              class="p-2 pr-4 border border-gray-400 shadow rounded w-min bg-gradient-to-t from-blue-100 to-gray-50"
+              class="p-2 pr-4 border border-gray-400 shadow rounded w-min bg-gradient-to-t from-blue-100 to-gray-50 dark:border-slate-500 dark:from-slate-800 dark:to-slate-700 dark:ring-1 dark:ring-inset dark:ring-slate-900/10"
             ></div>
           </div>
 
@@ -94,7 +131,7 @@
             <button
               title="Limpar equações"
               id="clear-btn"
-              class="flex items-center gap-0.5 text-sm px-2 py-0.5 border border-gray-400 text-gray-700 rounded font-semibold bg-white hover:bg-gray-200 ease-in-out duration-150 active:scale-95"
+              class="flex items-center gap-0.5 text-sm px-2 py-0.5 border border-gray-400 text-gray-700 rounded font-semibold bg-white hover:bg-gray-200 ease-in-out duration-150 active:scale-95 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600"
             >
               Limpar
               <!-- prettier-ignore -->
@@ -105,7 +142,7 @@
             <button
               title="Resolver um exemplo de sistema linear"
               id="fill-with-example-btn"
-              class="flex items-center gap-0.5 text-sm px-2 py-0.5 border border-gray-400 text-gray-700 rounded font-semibold bg-white hover:bg-gray-200 ease-in-out duration-150 active:scale-95"
+              class="flex items-center gap-0.5 text-sm px-2 py-0.5 border border-gray-400 text-gray-700 rounded font-semibold bg-white hover:bg-gray-200 ease-in-out duration-150 active:scale-95 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600"
             >
               Resolver um exemplo
               <!-- prettier-ignore -->
@@ -120,13 +157,15 @@
       <button
         title="Resolver sistema linear"
         id="solve-system"
-        class="w-full block p-3 rounded cursor-pointer text-white bg-blue-600 hover:bg-blue-700 shadow font-bold active:scale-95 ease-in-out duration-150"
+        class="w-full block p-3 rounded cursor-pointer text-white bg-blue-600 hover:bg-blue-700 shadow font-bold active:scale-95 ease-in-out duration-150 dark:bg-sky-700 dark:hover:bg-sky-800"
       >
         Resolver
       </button>
 
       <div class="flex flex-col gap-1 items-center w-full">
-        <h2 class="text-gray-900 font-bold text-lg">Solução do sistema</h2>
+        <h2 class="text-gray-900 font-bold text-lg dark:text-gray-100">
+          Solução do sistema
+        </h2>
         <div class="w-full flex gap-0.5 flex-col border-b border-gray-400 p-1">
           <div class="mb-2">Mensagem: <span id="status-message"> </span></div>
           <div class="text-sm">
@@ -155,7 +194,7 @@
         </div>
       </div>
     </div>
-    <div class="p-2 rounded max-w-3xl w-full flex justify-end px-5">
+    <div class="p-2 rounded max-w-3xl w-full flex justify-end px-4">
       <span class="text-sm text-gray-400 hover:text-gray-500">
         Feito por
         <a
@@ -187,6 +226,7 @@
     ></script>
 
     <script src="./scripts/utils.js" defer></script>
+    <script src="./scripts/dark-mode.js" defer></script>
     <script src="./scripts/classes/MathJaxHTMLWriter.js" defer></script>
     <script src="./scripts/script.js" defer></script>
   </body>
