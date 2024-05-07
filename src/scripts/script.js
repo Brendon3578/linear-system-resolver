@@ -181,7 +181,7 @@ function solveSystem() {
 
     showStatusMessage("success", equationResultOutput.message);
   } catch (e) {
-    console.error(e.message);
+    console.error(e);
     showStatusMessage(
       "error",
       e.message || "Não foi possível realizar o cálculo."
@@ -448,6 +448,11 @@ function extractCoefficients(eq, elementToFocusIfError) {
 
   // Verifica se a equação contém a incógnita z
   const is3x3 = /z/i.test(eq);
+
+  if (is3x3 && is3x3LinearSystem == false)
+    throw new Error(
+      "Você está tentando calcular um sistema 3x3 com apenas duas equações!"
+    );
 
   // Define padrão de correspondência com base no número de incógnitas
   const pattern = is3x3
